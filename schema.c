@@ -2,7 +2,6 @@
 #include "schema.h"
 
 void func_print_schema(char **column_names, tip_stolbca *column_types, int column_count, int line_count){
-    printf("Schema:\n");
 
     printf("rows %d\n", line_count);
     printf("columns %d\n", column_count);

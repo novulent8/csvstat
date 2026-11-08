@@ -166,16 +166,39 @@ void func_print_stats(char **column_names, column_stats *stats, tip_stolbca *col
             printf("max %lld\n", stats[i].int_max);
         }
         else{
-            printf("min %.6f\n", stats[i].min);
-            printf("max %.6f\n", stats[i].max);
+
+            double min_value = stats[i].min;
+            double max_value = stats[i].max;
+
+            if (min_value == 0.0){
+                min_value = 0.0;
+            }
+
+            if (max_value == 0.0){
+                max_value = 0.0;
+            }
+
+            printf("min %.6f\n", min_value);
+            printf("max %.6f\n", max_value);
         }
 
+        double mean_value;
+
         if (column_types[i] == TYPE_INT) {
-            printf("mean %.6f\n", (double)stats[i].int_sum / stats[i].value_count);
+
+            mean_value = (double)stats[i].int_sum / stats[i].value_count;
         }
-        else {
-            printf("mean %.6f\n", stats[i].sum / stats[i].value_count);
+        else{
+            
+            mean_value = stats[i].sum / stats[i].value_count;
         }
+
+        if (mean_value == 0.0){
+            mean_value = 0.0;
+        }
+
+        printf("mean %.6f\n", mean_value);
+
 
         printf("positive %d\n", stats[i].positive);
         printf("negative %d\n", stats[i].negative);

@@ -54,7 +54,7 @@ int main(int argc, char *argv[]){
     //Если аргументы переданы неправильно
 
     if (result != 0) {
-        printf("Invalid command line arguments. Use --help for usage\n");
+        fprintf(stderr, "Invalid command line arguments. Use --help for usage\n");
         return 2;
     }
 
@@ -66,7 +66,7 @@ int main(int argc, char *argv[]){
         FILE *file = fopen(args.file_name, "r");
     //если файл пустой
     if (file == NULL) {
-        printf("error open file");
+        fprintf(stderr, "error open file");
         return 1;
     }
 
@@ -75,7 +75,7 @@ int main(int argc, char *argv[]){
     char *line = malloc(line_capacity);
 
     if (line == NULL){
-        printf("Memory allocation error\n");
+        fprintf(stderr, "Memory allocation error\n");
         fclose(file);
         return 1;
     }
@@ -102,7 +102,7 @@ int main(int argc, char *argv[]){
         if (line_count > 1){
             
             if (func_count_columns(line) != column_count) {
-                printf("CSV structure error\n");
+                fprintf(stderr, "CSV structure error\n");
 
                 for (int i = 0; i < column_count; i++){
                     free(column_names[i]);
@@ -118,7 +118,7 @@ int main(int argc, char *argv[]){
             //определяем типы значений и при необходимости обновляем типы столбцов
 
            if (func_read_row_types(line, column_types, stats, column_count) == 0){
-                printf("Memory allocation error\n");
+                fprintf(stderr, "Memory allocation error\n");
 
                 for (int i = 0; i < column_count; i++){
                     free(column_names[i]);
@@ -135,7 +135,7 @@ int main(int argc, char *argv[]){
             //добавляем значения текущей строки в статистику
 
             if (func_update_stats(line, stats, column_types, column_count) == 0){
-                printf("Updating statistics error\n");
+                fprintf(stderr, "Updating statistics error\n");
 
                 for (int i = 0; i < column_count; i++) {
                     free(column_names[i]);
@@ -159,7 +159,7 @@ int main(int argc, char *argv[]){
             stats = calloc(column_count, sizeof(column_stats));
 
             if (column_types == NULL || column_names == NULL || stats == NULL){
-                printf("Memory allocation error\n");
+                fprintf(stderr, "Memory allocation error\n");
 
                 free(stats);
                 free(column_names);
@@ -172,7 +172,7 @@ int main(int argc, char *argv[]){
            //сохраняем названия столбцов из заголовка
 
             if (func_read_column_names(line, column_names, column_count) == 0){
-                printf("Memory allocation error\n");
+                fprintf(stderr, "Memory allocation error\n");
 
                 for (int i = 0; i < column_count; i++){
                     free(column_names[i]);
@@ -197,7 +197,7 @@ int main(int argc, char *argv[]){
     //если не удалось ни одной строки прочитать
 
     if (line_count == 0){
-        printf("CSV file is empty\n");
+        fprintf(stderr, "CSV file is empty\n");
 
         free(line);
         free(column_types);
@@ -210,7 +210,7 @@ int main(int argc, char *argv[]){
     //если в файле есть только строка с заголовком
 
     if (line_count == 1) {
-    printf("CSV file has no data rows\n");
+    fprintf(stderr, "CSV file has no data rows\n");
 
         for (int i = 0; i < column_count; i++) {
             free(column_names[i]);
